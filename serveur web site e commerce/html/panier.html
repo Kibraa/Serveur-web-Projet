@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Panier</title>
+</head>
+<body>
+  <header>
+    <h1>Votre Panier</h1>
+    <nav>
+      <a href="/index.html">Accueil</a>
+      <a href="/html/catalogue.html">Catalogue</a>
+      <a href="/html/login.html">Connexion</a>
+    </nav>
+  </header>
+  <main class="cart">
+    <h2>Produits ajoutés au panier</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Prix</th>
+          <th>Quantité</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items">
+      </tbody>
+    </table>
+    <button>Acheter</button>
+  </main>
+  <footer>
+    <p>&copy; 2024 E-Commerce</p>
+  </footer>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsContainer = document.getElementById('cart-items');
+
+    cart.forEach(item => {
+      const productRow = document.createElement('tr');
+      productRow.innerHTML = `
+        <td>Produit ${item.id}</td>
+        <td>${item.id === '1' ? '20€' : item.id === '2' ? '35€' : '50€'}</td>
+        <td>${item.quantity}</td>
+        <td>${item.id === '1' ? 20 * item.quantity : item.id === '2' ? 35 * item.quantity : 50 * item.quantity}€</td>
+        <td><button class="remove-btn" data-id="${item.id}">Retirer</button></td>
+      `;
+      cartItemsContainer.appendChild(productRow);
+    });
+
+    document.querySelectorAll('.remove-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const productId = this.getAttribute('data-id');
+        removeFromCart(productId);
+      });
+    });
+
+    function removeFromCart(productId) {
+      const updatedCart = cart.filter(item => item.id !== productId);
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      location.reload();
+    }
+  </script>
+</body>
+</html>

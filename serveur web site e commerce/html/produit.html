@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Détail Produit</title>
+</head>
+<body>
+  <header>
+    <h1>Détail du Produit</h1>
+    <nav>
+      <a href="/index.html">Accueil</a>
+      <a href="/html/login.html">Connexion</a>
+      <a href="/html/register.html">Inscription</a>
+      <a href="/html/panier.html">Panier</a>
+    </nav>
+  </header>
+  <main>
+    <div class="product-detail">
+      <img src="../images/produit.jpg" alt="Produit en détail">
+      <div class="info">
+        <h2></h2>
+        <p class="description"></p>
+        <p class="price"></p>
+        <button class="add-to-cart">Ajouter au panier</button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2024 E-Commerce</p>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const produitId = params.get('produit');
+
+    const productName = produitId === '1' ? 'Produit 1' : produitId === '2' ? 'Produit 2' : produitId === '3' ? 'Produit 3' : 'Produit inconnu';
+    const productPrice = produitId === '1' ? '20€' : produitId === '2' ? '35€' : produitId === '3' ? '50€' : 'Prix inconnu';
+    const productDescription = 'Description détaillée du produit...';
+
+    document.querySelector('.product-detail h2').textContent = productName;
+    document.querySelector('.description').textContent = productDescription;
+    document.querySelector('.price').textContent = productPrice;
+
+    document.querySelector('.add-to-cart').addEventListener('click', function() {
+      addToCart(produitId);
+    });
+
+    function addToCart(productId) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingProduct = cart.find(item => item.id === productId);
+
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        cart.push({ id: productId, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Produit ajouté au panier !');
+    }
+  </script>
+</body>
+</html>
